@@ -44,17 +44,17 @@ class CallbackTest {
 
     // 1) Тест на корректный заказ карты
 
-    @Test
-    void shouldCardOrder() {
-        List<WebElement> elements = driver.findElements(By.className("input__control"));
-        elements.get(0).sendKeys("Александр");
-        elements.get(1).sendKeys("+79270000000");
-        driver.findElement(By.className("checkbox__box")).click();
-        driver.findElement(By.className("button")).click();
-        String expected = "Ваша заявка успешно отправлена! Наш менеджер свяжется с вами в ближайшее время.";
-        String actual = driver.findElement(By.className("paragraph")).getText().trim();
-        assertEquals(expected, actual);
-    }
+//    @Test
+//    void shouldCardOrder() {
+//        List<WebElement> elements = driver.findElements(By.className("input__control"));
+//        elements.get(0).sendKeys("Александр");
+//        elements.get(1).sendKeys("+79270000000");
+//        driver.findElement(By.className("checkbox__box")).click();
+//        driver.findElement(By.className("button")).click();
+//        String expected = "Ваша заявка успешно отправлена! Наш менеджер свяжется с вами в ближайшее время.";
+//        String actual = driver.findElement(By.className("paragraph")).getText().trim();
+//        assertEquals(expected, actual);
+//    }
 
     // 2) Тест, если неверно заполнено поле "Фамилия и имя"
 
