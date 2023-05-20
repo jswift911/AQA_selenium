@@ -8,6 +8,8 @@ import org.junit.jupiter.api.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.edge.EdgeDriver;
 import org.openqa.selenium.edge.EdgeOptions;
 
@@ -20,16 +22,16 @@ class CallbackTest {
 
     @BeforeAll
     static void setUpAll() {
-        WebDriverManager.edgedriver().setup();
+        WebDriverManager.chromedriver().setup();
     }
 
     @BeforeEach
     void setUp() {
-        EdgeOptions options = new EdgeOptions();
+        ChromeOptions options = new ChromeOptions();
         options.addArguments("--disable-dev-shm-usage");
         options.addArguments("--no-sandbox");
         options.addArguments("--headless");
-        driver = new EdgeDriver(options);
+        driver = new ChromeDriver(options);
         driver.get("http://localhost:9999");
     }
 
