@@ -35,6 +35,8 @@ class CallbackTest {
         driver.get("http://localhost:9999");
     }
 
+//========= Драйвер для Microsoft Edge (не работает с Appveyor !!!) =========
+
 //    @BeforeAll
 //    static void setUpAll() {
 //        WebDriverManager.edgedriver().setup();
@@ -49,6 +51,8 @@ class CallbackTest {
 //        driver = new EdgeDriver(options);
 //        driver.get("http://localhost:9999");
 //    }
+
+//============================================================================
 
     @AfterEach
     void tearDown() {
