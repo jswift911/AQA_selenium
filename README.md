@@ -1,1 +1,1 @@
-badge
+[![Build status](https://ci.appveyor.com/api/projects/status/qo8pr740el7cy8ik?svg=true)](https://ci.appveyor.com/project/jswift911/qa-selenium)
