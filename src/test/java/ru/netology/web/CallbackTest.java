@@ -12,6 +12,7 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.edge.EdgeDriver;
 import org.openqa.selenium.edge.EdgeOptions;
+import org.openqa.selenium.support.Color;
 
 import java.util.List;
 
@@ -65,13 +66,13 @@ class CallbackTest {
 
     @Test
     void shouldCardOrder() {
-        List<WebElement> elements = driver.findElements(By.className("input__control"));
-        elements.get(0).sendKeys("Александр");
-        elements.get(1).sendKeys("+79270000000");
-        driver.findElement(By.className("checkbox__box")).click();
-        driver.findElement(By.className("button")).click();
+        driver.findElement(By.cssSelector("[data-test-id='name'] input")).sendKeys("Иван Петров-Иванов");
+        driver.findElement(By.cssSelector("[data-test-id='phone'] input")).sendKeys("+79270000000");
+        driver.findElement(By.cssSelector("[data-test-id='agreement'] .checkbox__box")).click();
+        driver.findElement(By.cssSelector("button.button_view_extra")).click();
+        WebElement success = driver.findElement(By.cssSelector("[data-test-id='order-success']"));
         String expected = "Ваша заявка успешно отправлена! Наш менеджер свяжется с вами в ближайшее время.";
-        String actual = driver.findElement(By.className("paragraph")).getText().trim();
+        String actual = success.getText().trim();
         assertEquals(expected, actual);
     }
 
@@ -79,12 +80,13 @@ class CallbackTest {
 
     @Test
     void shouldInvalidCardFio() {
-        List<WebElement> elements = driver.findElements(By.className("input__control"));
-        elements.get(0).sendKeys("Alexandr");
-        driver.findElement(By.className("button")).click();
-        WebElement invalid = driver.findElement(By.className("input_invalid"));
+        driver.findElement(By.cssSelector("[data-test-id='name'] input")).sendKeys("Alexandr");
+        driver.findElement(By.cssSelector("[data-test-id='phone'] input")).sendKeys("+79270000000");
+        driver.findElement(By.cssSelector("[data-test-id='agreement'] .checkbox__box")).click();
+        driver.findElement(By.cssSelector("button.button_view_extra")).click();
+        WebElement invalid = driver.findElement(By.cssSelector("[data-test-id='name'].input_invalid .input__sub"));
         String expected = "Имя и Фамилия указаные неверно. Допустимы только русские буквы, пробелы и дефисы.";
-        String actual = invalid.findElement(By.className("input__sub")).getText().trim();;
+        String actual = invalid.getText().trim();
         assertEquals(expected, actual);
     }
 
@@ -92,12 +94,13 @@ class CallbackTest {
 
     @Test
     void shouldInvalidCardFioEmpty() {
-        List<WebElement> elements = driver.findElements(By.className("input__control"));
-        elements.get(0).sendKeys("");
-        driver.findElement(By.className("button")).click();
-        WebElement invalid = driver.findElement(By.className("input_invalid"));
+        driver.findElement(By.cssSelector("[data-test-id='name'] input")).sendKeys("");
+        driver.findElement(By.cssSelector("[data-test-id='phone'] input")).sendKeys("+79270000000");
+        driver.findElement(By.cssSelector("[data-test-id='agreement'] .checkbox__box")).click();
+        driver.findElement(By.cssSelector("button.button_view_extra")).click();
+        WebElement invalid = driver.findElement(By.cssSelector("[data-test-id='name'].input_invalid .input__sub"));
         String expected = "Поле обязательно для заполнения";
-        String actual = invalid.findElement(By.className("input__sub")).getText().trim();;
+        String actual = invalid.getText().trim();
         assertEquals(expected, actual);
     }
 
@@ -105,27 +108,41 @@ class CallbackTest {
 
     @Test
     void shouldInvalidCardPhone() {
-        List<WebElement> elements = driver.findElements(By.className("input__control"));
-        elements.get(0).sendKeys("Александр");
-        elements.get(1).sendKeys("9999999");
-        driver.findElement(By.className("button")).click();
-        WebElement invalid = driver.findElement(By.className("input_invalid"));
+        driver.findElement(By.cssSelector("[data-test-id='name'] input")).sendKeys("Иван Петров-Иванов");
+        driver.findElement(By.cssSelector("[data-test-id='phone'] input")).sendKeys("9999999");
+        driver.findElement(By.cssSelector("[data-test-id='agreement'] .checkbox__box")).click();
+        driver.findElement(By.cssSelector("button.button_view_extra")).click();
+        WebElement invalid = driver.findElement(By.cssSelector("[data-test-id='phone'].input_invalid .input__sub"));
         String expected = "Телефон указан неверно. Должно быть 11 цифр, например, +79012345678.";
-        String actual = invalid.findElement(By.className("input__sub")).getText().trim();;
+        String actual = invalid.getText().trim();
         assertEquals(expected, actual);
     }
 
     // 5) Тест, если не заполнено поле "Телефон"
 
     @Test
-    void shouldInvalidCardPhoneEmpty() throws InterruptedException {
-        List<WebElement> elements = driver.findElements(By.className("input__control"));
-        elements.get(0).sendKeys("Александр");
-        elements.get(1).sendKeys(" ");
-        driver.findElement(By.className("button")).click();
-        WebElement invalid = driver.findElement(By.className("input_invalid"));
+    void shouldInvalidCardPhoneEmpty() {
+        driver.findElement(By.cssSelector("[data-test-id='name'] input")).sendKeys("Иван Петров-Иванов");
+        driver.findElement(By.cssSelector("[data-test-id='phone'] input")).sendKeys("");
+        driver.findElement(By.cssSelector("[data-test-id='agreement'] .checkbox__box")).click();
+        driver.findElement(By.cssSelector("button.button_view_extra")).click();
+        WebElement invalid = driver.findElement(By.cssSelector("[data-test-id='phone'].input_invalid .input__sub"));
         String expected = "Поле обязательно для заполнения";
-        String actual = invalid.findElement(By.className("input__sub")).getText().trim();;
+        String actual = invalid.getText().trim();
+        assertEquals(expected, actual);
+    }
+
+    // 6) Тест, если не нажат чекбокс (текст красным цветом)
+
+    @Test
+    void shouldCheckboxNotChecked() {
+        driver.findElement(By.cssSelector("[data-test-id='name'] input")).sendKeys("Иван Петров-Иванов");
+        driver.findElement(By.cssSelector("[data-test-id='phone'] input")).sendKeys("+79270000000");
+        driver.findElement(By.cssSelector("button.button_view_extra")).click();
+        WebElement invalid = driver.findElement(By.cssSelector("[data-test-id='agreement'].input_invalid .checkbox__text"));
+        String color = invalid.getCssValue("color");
+        String expected = Color.fromString(color).asHex();
+        String actual = "#ff5c5c";
         assertEquals(expected, actual);
     }
 }
